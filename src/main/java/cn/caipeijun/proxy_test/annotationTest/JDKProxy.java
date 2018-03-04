@@ -1,7 +1,9 @@
 package cn.caipeijun.proxy_test.annotationTest;
 
+import java.lang.reflect.Executable;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 
 public class JDKProxy implements InvocationHandler {
 
@@ -32,5 +34,4 @@ public class JDKProxy implements InvocationHandler {
     private void pre() {
         System.out.println("before say Hello");
     }
-
 }

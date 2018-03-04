@@ -8,6 +8,7 @@ public class CglibAop implements MethodInterceptor {
     @Override
     public Object intercept(Object o, Method method, Object[] objects, MethodProxy methodProxy) throws Throwable {
 
+        System.out.println("invoke...");
         MyLog myLog = method.getDeclaredAnnotation(MyLog.class);
 
         if (myLog != null) {

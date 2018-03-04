@@ -5,7 +5,7 @@ import org.springframework.cglib.proxy.Enhancer;
 
 import java.lang.reflect.Proxy;
 
-public class Target {
+public class Target implements Hello {
 
     @MyLog(name = "蔡沛君",target = "所有人")
     public void sayHello(){
@@ -21,11 +21,12 @@ public class Target {
         //cglib实现
         System.setProperty(DebuggingClassWriter.DEBUG_LOCATION_PROPERTY, "cglib");
         //假定一个对象工厂，所有支持这个注解的对象都需要通过这个工厂来实例化
-        CglibAop cglibAop = new CglibAop();
+
+        CglibAop cglibAop = new CglibAop();//拦截器实现逻辑
         Enhancer enhancer =  new Enhancer();
-        enhancer.setSuperclass(Target.class);
-        enhancer.setCallback(cglibAop);
-        Target target = (Target) enhancer.create();
+        enhancer.setSuperclass(Target.class);//设置代理的类
+        enhancer.setCallback(cglibAop);//设置方法拦截
+        Target target = (Target) enhancer.create();//创建代理类
         target.sayHello();
         target.sayHello2();
 
@@ -34,9 +35,9 @@ public class Target {
         jdkProxy.setTarget(new Target());
         Target target1 = new Target();
 
-        Target target2 = (Target) Proxy.newProxyInstance(target1.getClass().getClassLoader(),Target.class.getInterfaces(),jdkProxy);
-        target2.sayHello();
-        target2.sayHello2();
+        Hello hello = (Hello) Proxy.newProxyInstance(target1.getClass().getClassLoader(),Target.class.getInterfaces(),jdkProxy);
+        hello.sayHello();
+        hello.sayHello2();
     }
 
 }
